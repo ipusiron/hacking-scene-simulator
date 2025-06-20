@@ -164,6 +164,7 @@ body {
 
 .output-line {
     margin-bottom: 2px;
+    white-space: pre;
 }
 
 .command-prompt {
