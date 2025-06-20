@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Hacking Scene Simulator** - a web application that creates realistic-looking hacking scenes for filming, journalism, and educational purposes. It's a single-page HTML application with embedded CSS and JavaScript that simulates 6 different cybersecurity scenarios.
+This is a **Hacking Scene Simulator** - a web application that creates realistic-looking hacking scenes for filming, journalism, and educational purposes. It's a web application with separated HTML, CSS, and JavaScript files that simulates 6 different cybersecurity scenarios.
 
 ## Architecture
 
-- **Single-file application**: All code is contained in `index.html`
+- **Separated files**: HTML structure (`index.html`), CSS styles (`style.css`), and JavaScript logic (`script.js`)
 - **Vanilla JavaScript**: No external dependencies or frameworks
 - **Fullscreen simulation**: Uses Fullscreen API for immersive experience
 - **Real-time animation**: Multiple animation loops for different scenes
@@ -33,8 +33,9 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 
 ## Development Notes
 
-- The application uses CSS classes for different scene styling (`.terminal`, `.matrix`, `.retro`, etc.)
-- Each scene has its own animation logic and data arrays
+- **CSS Styling**: All styles are in `style.css` with classes for different scene styling (`.terminal`, `.matrix`, `.retro`, etc.)
+- **JavaScript Logic**: All functionality is in `script.js` with each scene having its own animation logic and data arrays
+- **HTML Structure**: Clean semantic HTML in `index.html` with external file references
 - Sound effects are generated using Web Audio API oscillators
 - Matrix scene uses dynamic DOM manipulation for falling character effects
 - All text content is pre-defined in JavaScript arrays

@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #00ff00;
+    overflow: hidden;
+}
+
+.scene-selector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+    padding: 20px;
+}
+
+.selector-title {
+    font-size: 2.5em;
+    margin-bottom: 1.5em;
+    text-shadow: 0 0 20px #00ff00;
+    animation: pulse 2s infinite;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 2em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.control-group {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.control-group select,
+.control-group input {
+    background: #000;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 5px;
+    font-family: inherit;
+}
+
+.scene-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.scene-button {
+    padding: 15px;
+    background: rgba(0, 255, 0, 0.1);
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.scene-button:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    transform: translateY(-3px);
+}
+
+.scene-button h3 {
+    margin-bottom: 8px;
+    font-size: 1.3em;
+}
+
+.scene-button p {
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.simulator {
+    display: none;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.terminal {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 20px;
+    height: 100vh;
+    overflow: hidden;
+    white-space: pre-wrap;
+}
+
+.matrix {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.retro {
+    background: #001100;
+    color: #33ff33;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    line-height: 1.2;
+    padding: 20px;
+    height: 100vh;
+    overflow: hidden;
+    border: 3px solid #33ff33;
+}
+
+.nmap, .wireshark, .metasploit {
+    background: #000;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.3;
+    padding: 20px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.wireshark {
+    background: #1e1e2e;
+    color: #cdd6f4;
+}
+
+.metasploit {
+    background: #000;
+    color: #ff6b6b;
+}
+
+.output-line {
+    margin-bottom: 2px;
+}
+
+.command-prompt {
+    color: #ffff00;
+}
+
+.error-text {
+    color: #ff0000;
+}
+
+.success-text {
+    color: #00ffff;
+}
+
+.info-text {
+    color: #89cff0;
+}
+
+.warning-text {
+    color: #ffa500;
+}
+
+.matrix-char {
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    line-height: 20px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.exit-hint {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 10px;
+    border: 1px solid rgba(0, 255, 0, 0.6);
+    font-size: 11px;
+    z-index: 1000;
+    color: rgba(0, 255, 0, 0.8);
+    border-radius: 3px;
+}
+
+.timer-display {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border: 1px solid #00ff00;
+    font-size: 12px;
+    z-index: 1000;
+    color: #00ff00;
+}
+
+@keyframes matrix-fall {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
