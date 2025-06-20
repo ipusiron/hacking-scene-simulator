@@ -8,6 +8,11 @@ let timerInterval = null;
 let soundEnabled = false;
 let audioContext = null;
 
+// Mobile touch handling
+let touchStartTime = 0;
+let touchStartY = 0;
+let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 // Audio setup
 function initAudio() {
     if (soundEnabled && !audioContext) {
@@ -413,6 +418,9 @@ function startScene(sceneType) {
     // フルスクリーンにする
     enterFullscreen();
     
+    // 終了ヒントを更新
+    updateExitHint();
+    
     const content = document.getElementById('sceneContent');
     content.innerHTML = '';
     
@@ -495,8 +503,10 @@ function startLinuxScene() {
 
 function startMatrixScene() {
     const content = document.getElementById('sceneContent');
-    const columns = Math.floor(window.innerWidth / 20);
-    const rows = Math.floor(window.innerHeight / 20);
+    // モバイル対応：画面サイズに応じて文字間隔を調整
+    const charWidth = isMobile ? (window.innerWidth < 480 ? 12 : 16) : 20;
+    const columns = Math.floor(window.innerWidth / charWidth);
+    const rows = Math.floor(window.innerHeight / (charWidth + 2));
     
     // 各列の状態を管理
     const columnStates = [];
@@ -543,7 +553,7 @@ function startMatrixScene() {
                 if (!charObj.element) {
                     charObj.element = document.createElement('div');
                     charObj.element.className = 'matrix-char';
-                    charObj.element.style.left = (colIndex * 20) + 'px';
+                    charObj.element.style.left = (colIndex * charWidth) + 'px';
                     content.appendChild(charObj.element);
                 }
                 
@@ -832,3 +842,94 @@ document.addEventListener('webkitfullscreenchange', function() {
         stopScene();
     }
 });
+
+// タッチイベント（モバイル対応）
+document.addEventListener('touchstart', function(e) {
+    if (currentScene) {
+        touchStartTime = Date.now();
+        touchStartY = e.touches[0].clientY;
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchend', function(e) {
+    if (currentScene) {
+        const touchEndTime = Date.now();
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchDuration = touchEndTime - touchStartTime;
+        const touchDistance = Math.abs(touchEndY - touchStartY);
+        
+        // タップ（短時間かつ短距離）またはダブルタップで終了
+        if (touchDuration < 500 && touchDistance < 30) {
+            stopScene();
+        }
+        
+        // 上スワイプで終了
+        if (touchDistance > 100 && (touchStartY - touchEndY) > 50) {
+            stopScene();
+        }
+        
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// 画面回転時のリサイズ対応
+window.addEventListener('orientationchange', function() {
+    if (currentScene === 'matrix') {
+        // Matrixシーンの場合は再起動
+        setTimeout(() => {
+            if (currentScene === 'matrix') {
+                const content = document.getElementById('sceneContent');
+                content.innerHTML = '';
+                matrixIntervals.forEach(interval => clearInterval(interval));
+                matrixIntervals = [];
+                startMatrixScene();
+            }
+        }, 100);
+    }
+});
+
+// ウィンドウリサイズ時の対応
+window.addEventListener('resize', function() {
+    if (currentScene === 'matrix') {
+        // 少し遅延させてからMatrixシーンを再初期化
+        setTimeout(() => {
+            if (currentScene === 'matrix') {
+                const content = document.getElementById('sceneContent');
+                content.innerHTML = '';
+                matrixIntervals.forEach(interval => clearInterval(interval));
+                matrixIntervals = [];
+                startMatrixScene();
+            }
+        }, 200);
+    }
+});
+
+// モバイルブラウザのアドレスバー表示/非表示に対応
+window.addEventListener('scroll', function() {
+    if (currentScene) {
+        window.scrollTo(0, 0);
+    }
+});
+
+// iOS Safari対応：音声再生の準備
+document.addEventListener('touchstart', function() {
+    if (soundEnabled && audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}, { once: true });
+
+// exitHintの表示テキストをデバイスに応じて変更
+function updateExitHint() {
+    const exitHint = document.getElementById('exitHint');
+    if (exitHint) {
+        if (isMobile) {
+            exitHint.textContent = 'タップまたは上スワイプで終了';
+        } else {
+            exitHint.textContent = 'ESCキーで終了';
+        }
+    }
+}
+
+// 初期化時にヒントテキストを設定
+document.addEventListener('DOMContentLoaded', updateExitHint);

@@ -2,7 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
     <title>ハッキングシーンシミュレーター（Hacking Scene Simulator）</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -32,27 +35,45 @@
         </div>
 
         <div class="scene-buttons">
-            <button class="scene-button" onclick="startScene('linux')">
+            <button class="scene-button" onclick="startScene('linux')" 
+                    aria-label="Linux Terminal simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Linux Terminal</h3>
                 <p>本格的なLinuxコマンドライン操作風</p>
             </button>
-            <button class="scene-button" onclick="startScene('matrix')">
+            <button class="scene-button" onclick="startScene('matrix')" 
+                    aria-label="Matrix Code Rain simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Matrix Code Rain</h3>
                 <p>映画「マトリックス」風のコードレイン</p>
             </button>
-            <button class="scene-button" onclick="startScene('retro')">
+            <button class="scene-button" onclick="startScene('retro')" 
+                    aria-label="Retro Hacker simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Retro Hacker</h3>
                 <p>80年代風レトロハッカー画面</p>
             </button>
-            <button class="scene-button" onclick="startScene('nmap')">
+            <button class="scene-button" onclick="startScene('nmap')" 
+                    aria-label="Nmap Scanner simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Nmap Scanner</h3>
                 <p>ネットワークスキャンツール</p>
             </button>
-            <button class="scene-button" onclick="startScene('wireshark')">
+            <button class="scene-button" onclick="startScene('wireshark')" 
+                    aria-label="Wireshark Analyzer simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Wireshark Analyzer</h3>
                 <p>パケット解析ツール風</p>
             </button>
-            <button class="scene-button" onclick="startScene('metasploit')">
+            <button class="scene-button" onclick="startScene('metasploit')" 
+                    aria-label="Metasploit Framework simulation scene" 
+                    role="button" 
+                    tabindex="0">
                 <h3>Metasploit Framework</h3>
                 <p>ペネトレーションテストツール風</p>
             </button>
@@ -60,7 +81,7 @@
     </div>
 
     <div class="simulator" id="simulator">
-        <div class="exit-hint">ESCキーで終了</div>
+        <div class="exit-hint" id="exitHint">ESCキーまたはタップで終了</div>
         <div class="timer-display" id="timerDisplay" style="display: none;"></div>
         <div id="sceneContent"></div>
     </div>

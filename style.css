@@ -14,19 +14,23 @@ body {
 .scene-selector {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
-    padding: 20px;
+    padding: 10px;
+    padding-top: 20px;
+    overflow-y: auto;
 }
 
 .selector-title {
-    font-size: 2.5em;
-    margin-bottom: 1.5em;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
     text-shadow: 0 0 20px #00ff00;
     animation: pulse 2s infinite;
     text-align: center;
+    line-height: 1.2;
+    padding: 0 10px;
 }
 
 @keyframes pulse {
@@ -36,17 +40,21 @@ body {
 
 .controls {
     display: flex;
-    gap: 20px;
-    margin-bottom: 2em;
+    gap: 10px;
+    margin-bottom: 1.5rem;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
+    max-width: 600px;
 }
 
 .control-group {
     background: rgba(0, 255, 0, 0.1);
     border: 1px solid #00ff00;
-    padding: 15px;
+    padding: 10px;
     border-radius: 5px;
+    flex: 1;
+    min-width: 140px;
 }
 
 .control-group label {
@@ -60,44 +68,68 @@ body {
     background: #000;
     color: #00ff00;
     border: 1px solid #00ff00;
-    padding: 5px;
+    padding: 8px;
     font-family: inherit;
+    width: 100%;
+    border-radius: 3px;
+    font-size: 14px;
+    min-height: 44px; /* Touch-friendly minimum height */
 }
 
 .scene-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 15px;
-    max-width: 1200px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 600px;
     width: 100%;
+    padding: 0 10px;
 }
 
 .scene-button {
-    padding: 15px;
+    padding: 16px 20px;
     background: rgba(0, 255, 0, 0.1);
     border: 2px solid #00ff00;
     color: #00ff00;
     font-family: inherit;
-    font-size: 1em;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    border-radius: 8px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Touch-friendly tap target */
+    -webkit-tap-highlight-color: rgba(0, 255, 0, 0.3);
 }
 
-.scene-button:hover {
+.scene-button:hover,
+.scene-button:focus,
+.scene-button:active {
     background: rgba(0, 255, 0, 0.2);
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.scene-button:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
 }
 
 .scene-button h3 {
-    margin-bottom: 8px;
-    font-size: 1.3em;
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .scene-button p {
-    font-size: 0.85em;
+    font-size: 0.85rem;
     opacity: 0.8;
+    line-height: 1.3;
+    margin: 0;
 }
 
 .simulator {
@@ -111,9 +143,9 @@ body {
     background: #000;
     color: #00ff00;
     font-family: 'Courier New', monospace;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.4;
-    padding: 20px;
+    padding: 10px;
     height: 100vh;
     overflow: hidden;
     white-space: pre-wrap;
@@ -123,7 +155,7 @@ body {
     background: #000;
     color: #00ff00;
     font-family: 'Courier New', monospace;
-    font-size: 18px;
+    font-size: 14px;
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -133,21 +165,21 @@ body {
     background: #001100;
     color: #33ff33;
     font-family: 'Courier New', monospace;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 1.2;
-    padding: 20px;
+    padding: 10px;
     height: 100vh;
     overflow: hidden;
-    border: 3px solid #33ff33;
+    border: 2px solid #33ff33;
 }
 
 .nmap, .wireshark, .metasploit {
     background: #000;
     color: #ffffff;
     font-family: 'Courier New', monospace;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 1.3;
-    padding: 20px;
+    padding: 10px;
     height: 100vh;
     overflow: hidden;
 }
@@ -190,35 +222,38 @@ body {
 .matrix-char {
     position: absolute;
     font-family: 'Courier New', monospace;
-    font-size: 18px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 16px;
     user-select: none;
     pointer-events: none;
 }
 
 .exit-hint {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 6px 10px;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 8px 12px;
     border: 1px solid rgba(0, 255, 0, 0.6);
-    font-size: 11px;
+    font-size: 12px;
     z-index: 1000;
-    color: rgba(0, 255, 0, 0.8);
-    border-radius: 3px;
+    color: rgba(0, 255, 0, 0.9);
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
 }
 
 .timer-display {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     background: rgba(0, 0, 0, 0.8);
-    padding: 10px;
+    padding: 8px 12px;
     border: 1px solid #00ff00;
     font-size: 12px;
     z-index: 1000;
     color: #00ff00;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
 }
 
 @keyframes matrix-fall {
@@ -235,5 +270,389 @@ body {
     100% {
         transform: translateY(100vh);
         opacity: 0;
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Small phones (up to 480px) */
+@media (max-width: 480px) {
+    .scene-selector {
+        padding: 5px;
+        padding-top: 10px;
+    }
+    
+    .selector-title {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+        padding: 0 5px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    .control-group {
+        padding: 8px;
+        min-width: auto;
+    }
+    
+    .control-group label {
+        font-size: 0.8rem;
+    }
+    
+    .control-group select,
+    .control-group input {
+        padding: 10px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .scene-buttons {
+        gap: 8px;
+        padding: 0 5px;
+    }
+    
+    .scene-button {
+        padding: 14px 16px;
+        min-height: 70px;
+    }
+    
+    .scene-button h3 {
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }
+    
+    .scene-button p {
+        font-size: 0.8rem;
+    }
+    
+    /* Simulation screens */
+    .terminal,
+    .retro,
+    .nmap,
+    .wireshark,
+    .metasploit {
+        font-size: 10px;
+        padding: 5px;
+    }
+    
+    .matrix {
+        font-size: 12px;
+    }
+    
+    .matrix-char {
+        font-size: 12px;
+        line-height: 14px;
+    }
+    
+    .exit-hint,
+    .timer-display {
+        top: 5px;
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+    
+    .exit-hint {
+        right: 5px;
+    }
+    
+    .timer-display {
+        left: 5px;
+    }
+}
+
+/* Large phones / Small tablets (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .selector-title {
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .scene-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
+        gap: 10px;
+    }
+    
+    .scene-button {
+        min-height: 90px;
+    }
+    
+    .scene-button h3 {
+        font-size: 1.2rem;
+    }
+    
+    /* Simulation screens */
+    .terminal,
+    .retro,
+    .nmap,
+    .wireshark,
+    .metasploit {
+        font-size: 12px;
+        padding: 15px;
+    }
+    
+    .matrix {
+        font-size: 16px;
+    }
+    
+    .matrix-char {
+        font-size: 16px;
+        line-height: 18px;
+    }
+}
+
+/* Tablets (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .scene-selector {
+        padding: 15px;
+        justify-content: center;
+    }
+    
+    .selector-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.3rem;
+    }
+    
+    .controls {
+        gap: 15px;
+        margin-bottom: 1.8rem;
+    }
+    
+    .scene-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+        gap: 12px;
+    }
+    
+    .scene-button {
+        min-height: 100px;
+        padding: 18px 24px;
+    }
+    
+    .scene-button h3 {
+        font-size: 1.25rem;
+    }
+    
+    /* Simulation screens */
+    .terminal,
+    .retro,
+    .nmap,
+    .wireshark,
+    .metasploit {
+        font-size: 13px;
+        padding: 18px;
+    }
+    
+    .matrix {
+        font-size: 17px;
+    }
+    
+    .matrix-char {
+        font-size: 17px;
+        line-height: 19px;
+    }
+}
+
+/* Desktop (1025px and up) */
+@media (min-width: 1025px) {
+    .scene-selector {
+        padding: 20px;
+        justify-content: center;
+    }
+    
+    .selector-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .controls {
+        gap: 20px;
+        margin-bottom: 2rem;
+    }
+    
+    .scene-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1200px;
+        gap: 15px;
+    }
+    
+    .scene-button {
+        min-height: 120px;
+        padding: 20px 24px;
+    }
+    
+    .scene-button h3 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+    
+    .scene-button p {
+        font-size: 0.9rem;
+    }
+    
+    /* Simulation screens */
+    .terminal {
+        font-size: 14px;
+        padding: 20px;
+    }
+    
+    .retro {
+        font-size: 16px;
+        padding: 20px;
+        border-width: 3px;
+    }
+    
+    .nmap,
+    .wireshark,
+    .metasploit {
+        font-size: 13px;
+        padding: 20px;
+    }
+    
+    .matrix {
+        font-size: 18px;
+    }
+    
+    .matrix-char {
+        font-size: 18px;
+        line-height: 20px;
+    }
+    
+    .exit-hint,
+    .timer-display {
+        top: 20px;
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+    
+    .exit-hint {
+        right: 20px;
+    }
+    
+    .timer-display {
+        left: 20px;
+    }
+}
+
+/* Large desktop (1441px and up) */
+@media (min-width: 1441px) {
+    .selector-title {
+        font-size: 3rem;
+    }
+    
+    .scene-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1400px;
+    }
+    
+    .scene-button {
+        min-height: 140px;
+        padding: 24px 28px;
+    }
+    
+    .scene-button h3 {
+        font-size: 1.4rem;
+    }
+    
+    .scene-button p {
+        font-size: 1rem;
+    }
+    
+    /* Simulation screens */
+    .terminal {
+        font-size: 16px;
+    }
+    
+    .retro {
+        font-size: 18px;
+    }
+    
+    .nmap,
+    .wireshark,
+    .metasploit {
+        font-size: 14px;
+    }
+    
+    .matrix {
+        font-size: 20px;
+    }
+    
+    .matrix-char {
+        font-size: 20px;
+        line-height: 22px;
+    }
+}
+
+/* Landscape orientation for mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+    .scene-selector {
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    .selector-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .controls {
+        margin-bottom: 0.8rem;
+    }
+    
+    .scene-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .scene-button {
+        min-height: 60px;
+        padding: 8px 12px;
+    }
+    
+    .scene-button h3 {
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+    
+    .scene-button p {
+        font-size: 0.7rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .scene-button {
+        border-width: 1px; /* Thinner borders on high DPI */
+    }
+    
+    .exit-hint,
+    .timer-display {
+        border-width: 0.5px;
+    }
+}
+
+/* Accessibility: Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .selector-title {
+        animation: none;
+    }
+    
+    .scene-button {
+        transition: none;
+    }
+    
+    .scene-button:hover,
+    .scene-button:focus {
+        transform: none;
+    }
+    
+    @keyframes matrix-fall {
+        0%, 100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 }
