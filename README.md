@@ -1,6 +1,46 @@
+<!--
+---
+id: day006
+slug: hacking-scene-simulator
+
+title: "Hacking Scene Simulator"
+
+subtitle_ja: "映画・取材用ハッキング画面シミュレーター"
+subtitle_en: "Realistic Hacking Screen Simulator for Filming"
+
+description_ja: "映画やTV番組のハッキングシーン撮影・取材に使用できる、6種類のリアルなハッキング操作風画面をシミュレートするWebアプリケーション"
+description_en: "A web application simulating 6 types of realistic hacking screens for filming, journalism, and educational purposes"
+
+category_ja:
+  - ハッカー文化
+  - シミュレーター
+  - 教育・デモ
+category_en:
+  - Hacker Culture
+  - Simulator
+  - Education & Demo
+
+difficulty: 1
+
+tags:
+  - terminal
+  - matrix
+  - nmap
+  - wireshark
+  - metasploit
+  - fullscreen
+  - animation
+
+repo_url: "https://github.com/ipusiron/hacking-scene-simulator"
+demo_url: "https://ipusiron.github.io/hacking-scene-simulator/"
+
+hub: true
+---
+-->
+
 # ハッキングシーンシミュレーター（Hacking Scene Simulator）
 
-**Day 6 - セキュリティツールをAIで作ってみよう 100日チャレンジ**
+**Day006 - セキュリティツールをAIで作ってみよう 100日チャレンジ**
 
 映画やTV番組のハッキングシーンの撮影・取材に使用できる、リアルなハッキング操作風の画面シミュレーターです。
 
@@ -27,7 +67,7 @@
 - **音響効果**: リアルなビープ音やタイピング音（ON/OFF切替可能）
 - **時間制限機能**: 30秒〜10分、または制限なしの設定
 - **安全な操作**: ESCキーのみで終了、その他のキー操作は無視
-- **レスポンシブ対応**: 様々な画面サイズに対応
+- **レスポンシブ対応**: さまざまな画面サイズに対応
 
 ## 🖥️ シーン詳細
 
