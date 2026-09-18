@@ -2,20 +2,23 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="映画・TV番組の撮影や取材で使えるハッキング画面シミュレーター。6種類の画面をフルスクリーンで再生する">
     <title>ハッキングシーンシミュレーター（Hacking Scene Simulator）</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="scene-selector" id="sceneSelector">
+    <main class="scene-selector" id="sceneSelector">
         <h1 class="selector-title">ハッキングシーンシミュレーター<br>（Hacking Scene Simulator）</h1>
         
         <div class="controls">
             <div class="control-group">
-                <label>時間制限</label>
+                <label for="timeLimit">時間制限</label>
                 <select id="timeLimit">
                     <option value="0">制限なし</option>
                     <option value="30">30秒</option>
@@ -26,7 +29,7 @@
                 </select>
             </div>
             <div class="control-group">
-                <label>音響効果</label>
+                <label for="soundEffect">音響効果</label>
                 <select id="soundEffect">
                     <option value="off">OFF</option>
                     <option value="on">ON</option>
@@ -35,58 +38,45 @@
         </div>
 
         <div class="scene-buttons">
-            <button class="scene-button" onclick="startScene('linux')" 
-                    aria-label="Linux Terminal simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="linux">
                 <h3>Linux Terminal</h3>
                 <p>本格的なLinuxコマンドライン操作風</p>
             </button>
-            <button class="scene-button" onclick="startScene('matrix')" 
-                    aria-label="Matrix Code Rain simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="matrix">
                 <h3>Matrix Code Rain</h3>
                 <p>映画「マトリックス」風のコードレイン</p>
             </button>
-            <button class="scene-button" onclick="startScene('retro')" 
-                    aria-label="Retro Hacker simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="retro">
                 <h3>Retro Hacker</h3>
                 <p>80年代風レトロハッカー画面</p>
             </button>
-            <button class="scene-button" onclick="startScene('nmap')" 
-                    aria-label="Nmap Scanner simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="nmap">
                 <h3>Nmap Scanner</h3>
                 <p>ネットワークスキャンツール</p>
             </button>
-            <button class="scene-button" onclick="startScene('wireshark')" 
-                    aria-label="Wireshark Analyzer simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="wireshark">
                 <h3>Wireshark Analyzer</h3>
                 <p>パケット解析ツール風</p>
             </button>
-            <button class="scene-button" onclick="startScene('metasploit')" 
-                    aria-label="Metasploit Framework simulation scene" 
-                    role="button" 
-                    tabindex="0">
+            <button class="scene-button" type="button" data-scene="metasploit">
                 <h3>Metasploit Framework</h3>
                 <p>ペネトレーションテストツール風</p>
             </button>
         </div>
-    </div>
+        <footer class="site-footer">
+            <a href="https://github.com/ipusiron/hacking-scene-simulator">GitHubでソースコードを見る</a>
+        </footer>
+        <noscript>このツールの利用には JavaScript が必要です。</noscript>
+    </main>
 
     <div class="simulator" id="simulator">
-        <div class="exit-hint" id="exitHint">ESCキーまたはタップで終了</div>
-        <div class="timer-display" id="timerDisplay" style="display: none;"></div>
+        <div class="exit-hint" id="exitHint">ESCキーまたはQキーで終了</div>
+        <div class="timer-display" id="timerDisplay"></div>
         <div id="sceneContent"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="scenes.js" defer></script>
+    <script src="script.js" defer></script>
 
 </body>
 </html>

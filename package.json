@@ -1,0 +1,7 @@
+{
+    "name": "hacking-scene-simulator",
+    "private": true,
+    "scripts": {
+        "test": "node --test"
+    }
+}
