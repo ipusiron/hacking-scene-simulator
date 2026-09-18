@@ -144,6 +144,7 @@ hub: true
 
 - ペネトレーションテストツールの操作画面
 - ランダムなアスキーアート表示
+- 起動バナーから最初のmsf6プロンプトまでは一括表示し、その後の操作ログは1行ずつ再生
 - エクスプロイト実行からMeterpreterセッションまで
 
 コマンドやセッションログは架空で、実際の攻撃やコマンド実行は行いません。
@@ -201,7 +202,7 @@ ESC／Q以外のキーは抑止しません。F5やTab、Ctrl・Alt・Commandを
 - **レスポンシブ**：CSS Grid + Flexbox
 
 - **データと分類**：scenes.jsにデータと純粋関数を分離し、行の色分けを正規表現で判定
-- **行送り**：再帰的なsetTimeoutで行ごとに待ち時間を再計算
+- **行送り**：再帰的なsetTimeoutで行ごとに待ち時間を再計算。Metasploitの起動部分は初回・ループ再開時とも一括表示
 - **Matrix描画**：requestAnimationFrameを使用。動きを減らす設定では降下速度を半分に調整
 - **後片付け**：停止・切り替え時に行送り、再開、タイマー、描画、リサイズの予約を解放
 
@@ -213,9 +214,10 @@ Node 22以上で、次のコマンドを実行します。外部依存はなく�
 npm test
 ```
 
-node --testで6ファイルのテストを実行します。GitHub Actionsでもpushとpull_requestのたびに自動実行します。
+node --testで7ファイルのテストを実行します。GitHub Actionsでもpushとpull_requestのたびに自動実行します。
 
 - 分類ルール、タイマー表記、行送りの待ち時間
+- Metasploitの起動時の一括表示、以降の1行送り、ループ再開、停止・切り替え時の予約解除
 - Nmapのポート集計・ホスト数・サービス数・所要時間
 - Wiresharkのフレーム長・ヘッダー長・タイムスタンプ・TCPオプション
 - Linuxのログの日付と曜日、Metasploitのアーキテクチャ
@@ -267,9 +269,10 @@ hacking-scene-simulator/
 │   ├── screenshot3.png
 │   ├── screenshot4.png
 │   └── screenshot5.png
-├── test/                     # 依存なしの自動テスト6ファイル
+├── test/                     # 依存なしの自動テスト7ファイル
 │   ├── scenes.test.js
 │   ├── scene-data.test.js
+│   ├── playback.test.js
 │   ├── html.test.js
 │   ├── contrast.test.js
 │   ├── readme.test.js
