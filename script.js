@@ -114,8 +114,11 @@ function startLineScene(sceneId, lines) {
     const content = document.getElementById('sceneContent');
     const generation = sceneGeneration;
     let lineIndex = 0;
+    const initialPromptIndex = sceneId === 'metasploit'
+        ? lines.findIndex(text => /^msf6\b/.test(text))
+        : -1;
 
-    function appendLine() {
+    function appendLine(scheduleNext = true) {
         if (generation !== sceneGeneration || currentScene !== sceneId) return;
         const text = lines[lineIndex++];
         const line = document.createElement('div');
@@ -133,6 +136,7 @@ function startLineScene(sceneId, lines) {
         }
 
         content.scrollTop = content.scrollHeight;
+        if (!scheduleNext) return;
         if (lineIndex < lines.length) {
             animationTimeout = setTimeout(appendLine, Scenes.nextDelay(sceneId, Math.random()));
         } else {
@@ -142,12 +146,23 @@ function startLineScene(sceneId, lines) {
                 if (generation !== sceneGeneration || currentScene !== sceneId) return;
                 lineIndex = 0;
                 content.replaceChildren();
-                animationTimeout = setTimeout(appendLine, Scenes.nextDelay(sceneId, Math.random()));
+                startCycle();
             }, 5000);
         }
     }
 
-    animationTimeout = setTimeout(appendLine, Scenes.nextDelay(sceneId, Math.random()));
+    function startCycle() {
+        // Metasploitの起動バナーと最初のプロンプトは、同じ描画フレームでまとめて表示する。
+        // 以降の操作ログは1行ずつ流す。ループ再開時にも同じ境界を使う。
+        if (initialPromptIndex >= 0) {
+            while (lineIndex < initialPromptIndex) appendLine(false);
+            appendLine();
+        } else {
+            animationTimeout = setTimeout(appendLine, Scenes.nextDelay(sceneId, Math.random()));
+        }
+    }
+
+    startCycle();
 }
 
 function startMatrixScene() {

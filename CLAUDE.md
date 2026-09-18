@@ -19,7 +19,7 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 - index.html / style.css / script.js: accessible selection UI, playback, input and sound
 - scenes.js: SCENES, SCENE_LINES, METASPLOIT_ARTS, METASPLOIT_TAIL and pure functions
 - assets/: five viewport screenshots; ss.png remains as an unused historical image
-- test/: scenes, scene-data, html, contrast, readme and format tests
+- test/: scenes, scene-data, playback, html, contrast, readme and format tests
 - package.json: dependency-free npm test command
 - .github/workflows/test.yml: Test workflow on push and pull_request, Node 22
 - LICENSE: MIT License, Copyright (c) 2025 ipusiron
@@ -49,6 +49,8 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 
 - startScene(sceneType): initialize settings, clear old timers and start playback
 - startLineScene(sceneId, lines): shared text playback and tracked five-second restart
+  - Metasploit renders its startup banner through the first msf6 prompt immediately on every cycle
+  - Subsequent Metasploit lines and all other text scenes retain per-line delays
 - startMatrixScene(): requestAnimationFrame, white bottom glyph per column
 - clearSceneTimers() / stopScene(): release all timeouts, interval and animation frame
 - enterFullscreen() / exitFullscreen(): standard and WebKit APIs with rejection handling
