@@ -51,6 +51,33 @@ body.is-playing {
     padding-top: 20px;
 }
 
+.top-bar {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+    margin-bottom: 8px;
+}
+
+.lang-button {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--fg-green);
+    color: var(--fg-green);
+    font-family: inherit;
+    font-size: 0.9rem;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.lang-button:hover,
+.lang-button:active {
+    background: rgba(0, 255, 0, 0.25);
+}
+
 .selector-title {
     font-size: 1.8rem;
     margin-bottom: 1rem;
@@ -143,6 +170,7 @@ body.is-playing {
 
 .scene-button:focus-visible,
 .control-group select:focus-visible,
+.lang-button:focus-visible,
 .site-footer a:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
@@ -351,6 +379,11 @@ body.is-playing {
         padding: 5px;
         padding-top: 10px;
     }
+
+    .top-bar {
+        padding: 0 5px;
+        margin-bottom: 6px;
+    }
     
     .selector-title {
         font-size: 1.4rem;
@@ -440,6 +473,10 @@ body.is-playing {
         margin-bottom: 1.2rem;
     }
     
+    .top-bar {
+        max-width: 700px;
+    }
+
     .scene-buttons {
         grid-template-columns: repeat(2, 1fr);
         max-width: 700px;
@@ -491,6 +528,10 @@ body.is-playing {
         margin-bottom: 1.8rem;
     }
     
+    .top-bar {
+        max-width: 800px;
+    }
+
     .scene-buttons {
         grid-template-columns: repeat(2, 1fr);
         max-width: 800px;
@@ -543,6 +584,10 @@ body.is-playing {
         margin-bottom: 2rem;
     }
     
+    .top-bar {
+        max-width: 1200px;
+    }
+
     .scene-buttons {
         grid-template-columns: repeat(3, 1fr);
         max-width: 1200px;
@@ -613,6 +658,10 @@ body.is-playing {
         font-size: 3rem;
     }
     
+    .top-bar {
+        max-width: 1400px;
+    }
+
     .scene-buttons {
         grid-template-columns: repeat(3, 1fr);
         max-width: 1400px;
@@ -708,6 +757,10 @@ body.is-playing {
 @media (prefers-reduced-motion: reduce) {
     .selector-title {
         animation: none;
+    }
+
+    .lang-button {
+        transition: none;
     }
     
     .scene-button {

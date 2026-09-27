@@ -40,6 +40,8 @@ hub: true
 
 # Hacking Scene Simulator - 撮影・取材用のハッキング画面シミュレーター
 
+[English](README.en.md) · 日本語
+
 ![GitHub Repo stars](https://img.shields.io/github/stars/ipusiron/hacking-scene-simulator?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/ipusiron/hacking-scene-simulator?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ipusiron/hacking-scene-simulator)
@@ -97,6 +99,7 @@ hub: true
 - **時間制限機能**：30秒〜10分、または制限なしの設定
 - **安全な操作**：ESCキー・Qキー（タッチ端末はタップまたは上スワイプ）で終了。Ctrl・Alt・Commandを伴うキーはブラウザーに渡すので、リロードやタブ操作は妨げない。
 - **レスポンシブ対応**：さまざまな画面サイズに対応
+- **日本語・英語の切り替え**：選択画面右上のボタンで切り替え。`?lang=ja` / `?lang=en` でも指定でき、選んだ言語はブラウザーに記憶される
 
 ## 🖥️ シーン詳細
 
@@ -160,20 +163,32 @@ hub: true
 | Wireshark Analyzer | パケットの詳細表示 | 62 |
 | Metasploit Framework | アスキーアートとエクスプロイト実行ログ | 66〜68 |
 
+### 画面に流れるログを訳さない理由
+
+言語を切り替えても、シーンに流れる架空のログは英字のままです。理由は3つあります。
+
+- 実物のnmap・Wireshark・Metasploitの出力は英語である。和訳するとその場で「作り物」に見えてしまい、撮影素材としての説得力が落ちる
+- ログは読ませる文章ではなく、映像の一部である。撮影では文字が小さく速く流れるため、意味の理解よりも見た目の密度が効く
+- 数値・Base64・日付・CTFフラグはテストで相互に検算している。文章を差し替えると、この整合性の検査が意味を失う
+
+切り替えの対象は、選択画面・設定・終了ヒント・残り時間の表示といった操作用の文言です。
+
 ## 📖 使い方
 
 ### 基本操作
 
 1. Webブラウザーでアプリケーションを開く
-2. 時間制限と音響効果の設定を選択
-3. 6つのシーンから好みのものを選択
-4. 自動的にフルスクリーン表示が開始
-5. ESCキーまたはQ/qキーで終了
+2. 必要なら右上のボタンで表示言語を切り替える（日本語／English）
+3. 時間制限と音響効果の設定を選択
+4. 6つのシーンから好みのものを選択
+5. 自動的にフルスクリーン表示が開始
+6. ESCキーまたはQ/qキーで終了
 
 ### 設定項目
 
 - **時間制限**：制限なし、30秒、1分、2分、5分、10分
 - **音響効果**：ON/OFF切替可能
+- **表示言語**：日本語／English（初回は`?lang`、次にブラウザーの記憶、最後にブラウザーの言語設定の順で決まる）
 
 ### 終了方法
 
@@ -201,10 +216,12 @@ ESC／Q以外のキーは抑止しません。F5やTab、Ctrl・Alt・Commandを
 - **音響**：Web Audio API使用
 - **レスポンシブ**：CSS Grid + Flexbox
 
+- **文言**：i18n.jsが日本語と英語の辞書を持ち、`data-i18n`属性と`t()`で当てる。scenes.jsの架空のログは辞書に含めない
 - **データと分類**：scenes.jsにデータと純粋関数を分離し、行の色分けを正規表現で判定
 - **行送り**：再帰的なsetTimeoutで行ごとに待ち時間を再計算。Metasploitの起動部分は初回・ループ再開時とも一括表示
 - **Matrix描画**：requestAnimationFrameを使用。動きを減らす設定では降下速度を半分に調整
 - **後片付け**：停止・切り替え時に行送り、再開、タイマー、描画、リサイズの予約を解放
+- **言語切り替え**：`formatTimer`は`M:SS`だけを返し、「残り時間」「Time left」の語は表示の直前に付ける。終了ヒントと残り時間は`languagechange`で描き直すため、再生中に切り替えても画面の内容は消えない
 
 ## 🧪 テスト
 
@@ -214,7 +231,7 @@ Node 22以上で、次のコマンドを実行します。外部依存はなく�
 npm test
 ```
 
-node --testで7ファイルのテストを実行します。GitHub Actionsでもpushとpull_requestのたびに自動実行します。
+node --testで8ファイルのテストを実行します。GitHub Actionsでもpushとpull_requestのたびに自動実行します。
 
 - 分類ルール、タイマー表記、行送りの待ち時間
 - Metasploitの起動時の一括表示、以降の1行送り、ループ再開、停止・切り替え時の予約解除
@@ -224,6 +241,8 @@ node --testで7ファイルのテストを実行します。GitHub Actionsでも
 - アスキーアートの文字幅、架空のIPアドレスとCTFフラグ
 - READMEのシーン一覧・画像参照・YAMLメタデータ
 - HTMLの構造、配色のコントラスト、ファイルの整形
+- 日英の辞書のキーの一致、差し込みの整合、訳し忘れの検出、参照されるキーの存在
+- 架空のログに和文が混ざっていないこと、文言の一致で状態を判定していないこと
 
 画面に出る内容を、実物のツールの出力として筋が通る状態に保つための仕組みです。
 CTFフラグは英数字とアンダースコアを基本とし、既存のMetasploit用フラグ1件だけ末尾の!を許可しています。
@@ -234,7 +253,9 @@ CTFフラグは英数字とアンダースコアを基本とし、既存のMetas
 表示されるログ・IPアドレス・ハッシュ・CTFフラグ・認証情報はすべて架空です。
 WiresharkのBasic認証例は、admin:passwordのBase64表記を意図的に使っています。Basic認証の符号化が暗号化ではないことを示す教材です。
 
-ページのファイルを読み込んだあとは、再生のための通信は発生しません。入力を保存せず、localStorageやCookieも使いません。
+ページのファイルを読み込んだあとは、再生のための通信は発生しません。Cookieは使いません。
+localStorageに保存するのは`hacking-scene-simulator-language`（選んだ表示言語）だけで、時間制限・音響効果・再生の履歴は保存しません。
+ストレージが使えない環境では、記憶せずにその場の言語で動きます。
 文字列はtextContentで表示し、CSPでスクリプトとスタイルの読み込み元を制限しています。referrerはno-referrerです。
 frame-ancestorsはmetaでは指定できないため、含めていません。
 
@@ -260,6 +281,7 @@ frame-ancestorsはmetaでは指定できないため、含めていません。
 ```text
 hacking-scene-simulator/
 ├── index.html                # 選択画面とシミュレーター
+├── i18n.js                   # 日本語・英語の辞書と切り替え
 ├── scenes.js                 # 架空のログと分類・タイマーの純粋関数
 ├── script.js                 # DOM・再生・入力・音声の処理
 ├── style.css                 # 配色とレスポンシブ表示
@@ -269,18 +291,20 @@ hacking-scene-simulator/
 │   ├── screenshot3.png
 │   ├── screenshot4.png
 │   └── screenshot5.png
-├── test/                     # 依存なしの自動テスト7ファイル
+├── test/                     # 依存なしの自動テスト8ファイル
 │   ├── scenes.test.js
 │   ├── scene-data.test.js
 │   ├── playback.test.js
 │   ├── html.test.js
 │   ├── contrast.test.js
 │   ├── readme.test.js
+│   ├── i18n.test.js
 │   └── format.test.js
 ├── .github/workflows/test.yml # push・pull_request時のCI
 ├── package.json              # npm testの定義
 ├── LICENSE                   # MITライセンス
-├── README.md                 # 使い方と技術説明
+├── README.md                 # 使い方と技術説明（日本語）
+├── README.en.md              # 使い方と技術説明（英語）
 ├── CLAUDE.md                 # 開発時の案内
 └── ss.png                    # 旧画面の画像（参照せず保存）
 ```

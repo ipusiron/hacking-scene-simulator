@@ -428,10 +428,11 @@ function classifyLine(sceneId, text) {
     return matches.find(([pattern]) => pattern.test(text))?.[1] || '';
 }
 
+/** 残り時間をM:SS形式で返す。見出しの語（残り時間／Time left）は表示側のi18nが付ける。 */
 function formatTimer(seconds) {
     const remaining = Math.max(0, Math.floor(seconds));
     const minutes = Math.floor(remaining / 60);
-    return `残り時間: ${minutes}:${String(remaining % 60).padStart(2, '0')}`;
+    return `${minutes}:${String(remaining % 60).padStart(2, '0')}`;
 }
 
 function nextDelay(sceneId, rand) {
