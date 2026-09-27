@@ -355,8 +355,10 @@ body.is-playing {
 .timer-display {
     display: none;
     position: fixed;
-    top: 10px;
-    left: 10px;
+    /* 左上に置くと、ターミナルを模したログの先頭2行が隠れる。
+       ログは実物の nmap の出力を模しているので、終了ヒントの下へ回す */
+    top: 52px;
+    right: 10px;
     background: rgba(0, 0, 0, 0.8);
     padding: 8px 12px;
     border: 1px solid var(--fg-green);
@@ -462,7 +464,10 @@ body.is-playing {
     }
     
     .timer-display {
-        left: 5px;
+        /* 左上だとログの先頭が隠れる。終了ヒントの下に置く */
+        left: auto;
+        right: 5px;
+        top: 37px;
     }
 }
 
@@ -648,7 +653,10 @@ body.is-playing {
     }
     
     .timer-display {
-        left: 20px;
+        /* 左上だとログの先頭が隠れる。終了ヒントの下に置く */
+        left: auto;
+        right: 20px;
+        top: 57px;
     }
 }
 
