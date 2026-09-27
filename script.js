@@ -106,7 +106,8 @@ function startScene(sceneType) {
 }
 
 function updateTimerDisplay() {
-    document.getElementById('timerDisplay').textContent = Scenes.formatTimer(timeRemaining);
+    const display = document.getElementById('timerDisplay');
+    display.textContent = I18n.t('timer.remaining', { time: Scenes.formatTimer(timeRemaining) });
 }
 
 /** 5種類のログ画面を共通処理で再生する。待ち時間は各行で再評価する。 */
@@ -405,16 +406,29 @@ function updateExitHint() {
     const exitHint = document.getElementById('exitHint');
     if (exitHint) {
         if (isMobile) {
-            exitHint.textContent = 'タップまたは上スワイプで終了';
+            exitHint.textContent = I18n.t('exit.touch');
         } else {
-            exitHint.textContent = 'ESCキーまたはQキーで終了';
+            exitHint.textContent = I18n.t('exit.keyboard');
         }
     }
 }
 
-// 初期化時にヒントテキストを設定
-document.addEventListener('DOMContentLoaded', function() {
+/** 言語を切り替えたとき、data-i18nでは描き直せない文言をここで描き直す。
+    終了ヒントは端末で文言が変わり、タイマーは残り秒数を差し込むため。
+    シーンに流れる行は英字の演出なので、再生中に言語を変えても消さない。 */
+function refreshDynamicText() {
     updateExitHint();
+    if (currentScene && timeLimit > 0) updateTimerDisplay();
+}
+
+// 初期化時に言語とヒントテキストを設定
+document.addEventListener('DOMContentLoaded', function() {
+    I18n.init();
+    updateExitHint();
+    document.getElementById('langToggle').addEventListener('click', () => {
+        I18n.setLanguage(I18n.language === 'ja' ? 'en' : 'ja');
+    });
+    document.addEventListener('languagechange', refreshDynamicText);
     document.querySelectorAll('.scene-button').forEach(button => {
         button.addEventListener('click', () => startScene(button.dataset.scene));
     });

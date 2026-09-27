@@ -8,7 +8,7 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 
 ## Architecture
 
-- **Separated files**: HTML structure, CSS styles, pure scene data/rules (scenes.js), and DOM behavior (script.js)
+- **Separated files**: HTML structure, CSS styles, messages (i18n.js), pure scene data/rules (scenes.js), and DOM behavior (script.js)
 - **Vanilla JavaScript**: No external dependencies or frameworks
 - **Fullscreen simulation**: Uses Fullscreen API for immersive experience
 - **Real-time animation**: Recursive timeouts for text; requestAnimationFrame for Matrix
@@ -17,11 +17,13 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 ### Files
 
 - index.html / style.css / script.js: accessible selection UI, playback, input and sound
+- i18n.js: Japanese and English dictionaries, data-i18n application and the stored choice
 - scenes.js: SCENES, SCENE_LINES, METASPLOIT_ARTS, METASPLOIT_TAIL and pure functions
 - assets/: five viewport screenshots; ss.png remains as an unused historical image
-- test/: scenes, scene-data, playback, html, contrast, readme and format tests
+- test/: scenes, scene-data, playback, html, contrast, readme, i18n and format tests
 - package.json: dependency-free npm test command
 - .github/workflows/test.yml: Test workflow on push and pull_request, Node 22
+- README.md / README.en.md: Japanese and English documentation, cross-linked at the top
 - LICENSE: MIT License, Copyright (c) 2025 ipusiron
 
 ## Key Components
@@ -36,6 +38,16 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 6. **Metasploit Framework** - Penetration testing framework
 
 ### Core Functions
+
+#### i18n.js (no scene data, classic script and CommonJS)
+
+- ja / en: the interface wording only. Scene log lines stay in scenes.js and are never translated
+- t(key, values): fills {name} placeholders and throws on an unknown key
+- apply(root): sets documentElement.lang, the title, the meta description, data-i18n text and
+  data-i18n-aria-label / -title / -placeholder attributes
+- init(): ?lang, then the localStorage choice, then navigator.language
+- setLanguage(value): stores the choice and dispatches languagechange on document
+- Never put data-i18n on an element with child nodes; apply() replaces textContent
 
 #### scenes.js (no DOM, classic script and CommonJS)
 
@@ -54,7 +66,10 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 - startMatrixScene(): requestAnimationFrame, white bottom glyph per column
 - clearSceneTimers() / stopScene(): release all timeouts, interval and animation frame
 - enterFullscreen() / exitFullscreen(): standard and WebKit APIs with rejection handling
-- updateTimerDisplay() / updateExitHint(): Japanese labels consistent with README
+- updateTimerDisplay() / updateExitHint(): wording comes from I18n.t, not from literals
+- refreshDynamicText(): redraws the exit hint and the timer on languagechange, because those two
+  are written by script.js rather than by data-i18n. Playback itself is untouched, so switching
+  language mid-scene never clears the screen
 
 ## Development Notes
 
@@ -66,7 +81,11 @@ This is a **Hacking Scene Simulator** - a web application that creates realistic
 - All text content is pre-defined in JavaScript arrays
 - Open index.html directly in browser; HTTP serving also works, with no build step
 - Run npm test (node --test, no dependencies) on Node 22 or later
-- Keep classic deferred scripts in scenes.js then script.js order; do not use ES modules
+- Keep classic deferred scripts in i18n.js, scenes.js then script.js order; do not use ES modules
+- Scene logs imitate real English tool output, and scene-data.test.js allows half-width characters
+  only. Do not translate them, and do not move them into the i18n dictionaries
+- Decide state from select values, dataset marks or the shape of a log line, never from displayed
+  wording, because the wording changes with the language
 - Matrix falls at half speed with prefers-reduced-motion; the filming effect remains active
 - Selection scrolls normally; body.is-playing disables page scrolling only during playback
 

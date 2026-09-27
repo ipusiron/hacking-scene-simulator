@@ -14,25 +14,28 @@
 </head>
 <body>
     <main class="scene-selector" id="sceneSelector">
-        <h1 class="selector-title">ハッキングシーンシミュレーター<br>（Hacking Scene Simulator）</h1>
-        
+        <div class="top-bar">
+            <button id="langToggle" class="lang-button" type="button" data-i18n="app.langButton" data-i18n-aria-label="app.langAria" aria-label="言語を切り替える">English</button>
+        </div>
+        <h1 class="selector-title"><span data-i18n="app.headingMain">ハッキングシーンシミュレーター</span><br><span data-i18n="app.headingSub">（Hacking Scene Simulator）</span></h1>
+
         <div class="controls">
             <div class="control-group">
-                <label for="timeLimit">時間制限</label>
+                <label for="timeLimit" data-i18n="controls.timeLimit">時間制限</label>
                 <select id="timeLimit">
-                    <option value="0">制限なし</option>
-                    <option value="30">30秒</option>
-                    <option value="60">1分</option>
-                    <option value="120">2分</option>
-                    <option value="300">5分</option>
-                    <option value="600">10分</option>
+                    <option value="0" data-i18n="time.none">制限なし</option>
+                    <option value="30" data-i18n="time.30s">30秒</option>
+                    <option value="60" data-i18n="time.1m">1分</option>
+                    <option value="120" data-i18n="time.2m">2分</option>
+                    <option value="300" data-i18n="time.5m">5分</option>
+                    <option value="600" data-i18n="time.10m">10分</option>
                 </select>
             </div>
             <div class="control-group">
-                <label for="soundEffect">音響効果</label>
+                <label for="soundEffect" data-i18n="controls.sound">音響効果</label>
                 <select id="soundEffect">
-                    <option value="off">OFF</option>
-                    <option value="on">ON</option>
+                    <option value="off" data-i18n="sound.off">OFF</option>
+                    <option value="on" data-i18n="sound.on">ON</option>
                 </select>
             </div>
         </div>
@@ -40,33 +43,33 @@
         <div class="scene-buttons">
             <button class="scene-button" type="button" data-scene="linux">
                 <h3>Linux Terminal</h3>
-                <p>本格的なLinuxコマンドライン操作風</p>
+                <p data-i18n="scene.linux.desc">本格的なLinuxコマンドライン操作風</p>
             </button>
             <button class="scene-button" type="button" data-scene="matrix">
                 <h3>Matrix Code Rain</h3>
-                <p>映画「マトリックス」風のコードレイン</p>
+                <p data-i18n="scene.matrix.desc">映画「マトリックス」風のコードレイン</p>
             </button>
             <button class="scene-button" type="button" data-scene="retro">
                 <h3>Retro Hacker</h3>
-                <p>80年代風レトロハッカー画面</p>
+                <p data-i18n="scene.retro.desc">80年代風レトロハッカー画面</p>
             </button>
             <button class="scene-button" type="button" data-scene="nmap">
                 <h3>Nmap Scanner</h3>
-                <p>ネットワークスキャンツール</p>
+                <p data-i18n="scene.nmap.desc">ネットワークスキャンツール</p>
             </button>
             <button class="scene-button" type="button" data-scene="wireshark">
                 <h3>Wireshark Analyzer</h3>
-                <p>パケット解析ツール風</p>
+                <p data-i18n="scene.wireshark.desc">パケット解析ツール風</p>
             </button>
             <button class="scene-button" type="button" data-scene="metasploit">
                 <h3>Metasploit Framework</h3>
-                <p>ペネトレーションテストツール風</p>
+                <p data-i18n="scene.metasploit.desc">ペネトレーションテストツール風</p>
             </button>
         </div>
         <footer class="site-footer">
-            <a href="https://github.com/ipusiron/hacking-scene-simulator">GitHubでソースコードを見る</a>
+            <a href="https://github.com/ipusiron/hacking-scene-simulator" data-i18n="footer.repo">GitHubでソースコードを見る</a>
         </footer>
-        <noscript>このツールの利用には JavaScript が必要です。</noscript>
+        <noscript>このツールの利用には JavaScript が必要です。 / This tool requires JavaScript.</noscript>
     </main>
 
     <div class="simulator" id="simulator">
@@ -75,6 +78,7 @@
         <div id="sceneContent"></div>
     </div>
 
+    <script src="i18n.js" defer></script>
     <script src="scenes.js" defer></script>
     <script src="script.js" defer></script>
 

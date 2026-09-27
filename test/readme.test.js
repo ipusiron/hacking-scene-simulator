@@ -68,6 +68,38 @@ test('README uses the current 100-tool project name and correct usage text', () 
     }
 });
 
+const english = readFileSync(join(__dirname, '../README.en.md'), 'utf8');
+
+test('both READMEs cross-link each other and carry no YAML front matter twice', () => {
+    assert.match(readme.split(/\r?\n/)[42], /^\[English\]\(README\.en\.md\) · 日本語$/);
+    assert.match(english.split(/\r?\n/)[2], /^English · \[日本語\]\(README\.md\)$/);
+    // The hub reads the YAML from README.md only; the English file must not repeat it.
+    assert.doesNotMatch(english, /^<!--/);
+    assert.ok(english.includes('Day006 - 100 Security Tools with Generative AI'));
+    assert.ok(english.includes('page_id=42163'));
+});
+
+test('README.en.md is English prose that still names every scene and both languages', () => {
+    const body = english.split(/\r?\n/).filter(line => !/^\s*[|>]/.test(line)).join('\n');
+    // Only the language toggle wording and the cross-link may be Japanese.
+    const allowed = new Set(['日本語']);
+    const left = [...body.matchAll(/[぀-ヿ一-鿿]+/g)]
+        .map(item => item[0]).filter(word => !allowed.has(word));
+    assert.deepEqual([...new Set(left)], []);
+    for (const scene of SCENES) assert.ok(english.includes(scene.title), scene.title);
+    for (const file of ['i18n.js', 'README.en.md', 'i18n.test.js']) assert.ok(english.includes(file), file);
+    assert.ok(english.includes('hacking-scene-simulator-language'));
+});
+
+test('both READMEs describe the same stored value and the same file count', () => {
+    for (const [name, text, phrase] of [['README.md', readme, '8ファイル'], ['README.en.md', english, 'eight test files']]) {
+        assert.ok(text.includes('hacking-scene-simulator-language'), name);
+        assert.ok(text.includes(phrase), name + ': ' + phrase);
+        // The old claim that nothing at all is stored would now be false.
+        assert.ok(!/localStorageやCookieも使いません/.test(text), name);
+    }
+});
+
 test('MIT license exists and is linked locally from README', () => {
     assert.equal(readFileSync(join(__dirname, '../LICENSE'), 'utf8').split(/\r?\n/)[0], 'MIT License');
     assert.match(readme, /\[MITライセンス\]\(\.\/LICENSE\)/);

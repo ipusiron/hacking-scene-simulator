@@ -28,11 +28,12 @@ test('CSP uses external scripts and styles without unsupported frame directives'
     assert.match(meta('description'), /content="[^"]+"/);
 });
 
-test('classic deferred scripts load data before DOM behavior', () => {
+test('classic deferred scripts load messages and data before DOM behavior', () => {
     const tags = html.match(/<script\b[^>]*>/gi) || [];
-    assert.equal(tags.length, 2);
-    assert.match(tags[0], /src="scenes\.js"/);
-    assert.match(tags[1], /src="script\.js"/);
+    assert.equal(tags.length, 3);
+    assert.match(tags[0], /src="i18n\.js"/);
+    assert.match(tags[1], /src="scenes\.js"/);
+    assert.match(tags[2], /src="script\.js"/);
     for (const tag of tags) {
         assert.match(tag, /\bdefer\b/);
         assert.doesNotMatch(tag, /type\s*=\s*["']module/);
@@ -49,13 +50,17 @@ test('both controls have explicit labels and all required identifiers exist', ()
     assert.equal(labels.length, 2);
     assert.deepEqual(labels.map(item => item[1]), ['timeLimit', 'soundEffect']);
     for (const [, id] of labels) assert.ok(html.includes('id="' + id + '"'), id);
-    for (const id of ['sceneSelector', 'simulator', 'sceneContent', 'exitHint', 'timerDisplay', 'timeLimit', 'soundEffect']) {
+    const identifiers = ['sceneSelector', 'simulator', 'sceneContent', 'exitHint', 'timerDisplay'];
+    for (const id of identifiers.concat(['timeLimit', 'soundEffect', 'langToggle'])) {
         assert.equal([...html.matchAll(new RegExp('id="' + id + '"', 'g'))].length, 1, id);
     }
 });
 
-test('six native scene buttons agree with the data titles and descriptions', () => {
-    const buttons = [...html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)];
+test('six native scene buttons agree with the data titles and translated descriptions', () => {
+    const every = [...html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)];
+    // The language toggle is a button too, so only the six carrying data-scene are scenes.
+    const buttons = every.filter(item => item[1].includes('data-scene='));
+    assert.equal(every.length, 7);
     assert.equal(buttons.length, 6);
     for (const [index, [, attributes, contents]] of buttons.entries()) {
         const scene = SCENES[index];
@@ -63,16 +68,22 @@ test('six native scene buttons agree with the data titles and descriptions', () 
         assert.ok(attributes.includes('data-scene="' + scene.id + '"'), scene.id);
         assert.doesNotMatch(attributes, /\brole="button"|\btabindex=/);
         assert.doesNotMatch(attributes, /simulation scene/);
+        // Scene names are product-like proper nouns, so they stay untranslated.
         assert.ok(contents.includes('<h3>' + scene.title + '</h3>'));
-        assert.ok(contents.includes('<p>' + scene.description + '</p>'));
+        const key = 'scene.' + scene.id + '.desc';
+        assert.ok(contents.includes('<p data-i18n="' + key + '">' + scene.description + '</p>'), key);
         const aria = attributes.match(/aria-label="([^"]+)"/);
         if (aria) assert.ok(contents.replace(/<[^>]+>/g, '').includes(aria[1]));
     }
 });
 
-test('one main heading, JavaScript fallback and initial exit hint exist', () => {
+test('one main heading, bilingual JavaScript fallback and initial exit hint exist', () => {
     assert.match(html, /<main\b/);
-    assert.match(html, /<noscript>このツールの利用には JavaScript が必要です。<\/noscript>/);
+    // Without JavaScript the toggle cannot run, so the fallback names both languages.
+    const fallback = html.match(/<noscript>([^<]*)<\/noscript>/);
+    assert.ok(fallback);
+    assert.ok(fallback[1].includes('このツールの利用には JavaScript が必要です。'));
+    assert.ok(fallback[1].includes('This tool requires JavaScript.'));
     assert.equal((html.match(/<h1\b/g) || []).length, 1);
     assert.match(html, /id="exitHint">ESCキーまたはQキーで終了/);
 });
@@ -97,4 +108,14 @@ test('DOM script excludes unsafe insertion and inline color assignments', () => 
     assert.match(script, /\.style\.left/);
     assert.match(script, /replaceChildren\(\)/);
     assert.doesNotMatch(script, /fetch\s*\(|XMLHttpRequest|WebSocket|localStorage|document\.cookie/);
+});
+
+test('the language choice is the only stored value, and only i18n.js reaches storage', () => {
+    const i18n = readFileSync(join(__dirname, '../i18n.js'), 'utf8');
+    assert.doesNotMatch(i18n, /fetch\s*\(|XMLHttpRequest|WebSocket|document\.cookie|innerHTML/);
+    assert.deepEqual([...i18n.matchAll(/STORAGE_KEY = '([^']+)'/g)].map(item => item[1]),
+        ['hacking-scene-simulator-language']);
+    assert.equal([...i18n.matchAll(/localStorage\./g)].length, 2);
+    // Both accesses are guarded, because private browsing makes storage throw on access.
+    assert.equal([...i18n.matchAll(/try \{[^}]*localStorage\./g)].length, 2);
 });

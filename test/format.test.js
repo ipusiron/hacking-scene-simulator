@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { readFileSync, readdirSync } = require('node:fs');
 const { join } = require('node:path');
 
-const files = ['scenes.js', 'script.js', 'style.css', 'index.html'].concat(
+const files = ['scenes.js', 'script.js', 'i18n.js', 'style.css', 'index.html'].concat(
     readdirSync(__dirname).filter(name => name.endsWith('.js')).map(name => 'test/' + name)
 );
 const minimum = { 'scenes.js': 300, 'script.js': 200, 'style.css': 400, 'index.html': 60 };

@@ -55,14 +55,22 @@ test('non-string text never acquires a CSS class', () => {
     }
 });
 
+// formatTimer returns only M:SS. The label word comes from i18n at display time,
+// so switching language never has to reach into this pure function.
 for (const [seconds, expected] of [
-    [60, '残り時間: 1:00'], [5, '残り時間: 0:05'], [600, '残り時間: 10:00'],
-    [0, '残り時間: 0:00'], [-3, '残り時間: 0:00'], [125, '残り時間: 2:05']
+    [60, '1:00'], [5, '0:05'], [600, '10:00'],
+    [0, '0:00'], [-3, '0:00'], [125, '2:05']
 ]) {
     test('formatTimer(' + seconds + ') = ' + expected, () => {
         assert.equal(formatTimer(seconds), expected);
     });
 }
+
+test('formatTimer carries no language-specific label', () => {
+    for (const seconds of [0, 5, 60, 125, 600]) {
+        assert.match(formatTimer(seconds), /^\d+:\d{2}$/);
+    }
+});
 
 test('six scene identifiers and CSS classes remain stable', () => {
     assert.deepEqual(SCENES.map(scene => scene.id), ['linux', 'matrix', 'retro', 'nmap', 'wireshark', 'metasploit']);
