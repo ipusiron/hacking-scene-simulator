@@ -104,3 +104,28 @@ test('MIT license exists and is linked locally from README', () => {
     assert.equal(readFileSync(join(__dirname, '../LICENSE'), 'utf8').split(/\r?\n/)[0], 'MIT License');
     assert.match(readme, /\[MITライセンス\]\(\.\/LICENSE\)/);
 });
+
+test('ユースケースの「このツールならではの使い方」の数値は scenes.js と同じ（日英）', () => {
+    const { SCENE_LINES, nextDelay } = require('../scenes.js');
+    const readmeEn = readFileSync(join(__dirname, '../README.en.md'), 'utf8');
+    // 間隔は rand*A+B（rand は0〜1）なので、平均は rand=0 と rand=1 の中間
+    const seconds = id => Math.round(SCENE_LINES[id].length * (nextDelay(id, 0) + nextDelay(id, 1)) / 2 / 1000);
+    const [linux, retro, nmap, wireshark] = ['linux', 'retro', 'nmap', 'wireshark'].map(seconds);
+    assert.deepEqual([linux, retro, nmap, wireshark], [44, 60, 55, 37]);
+    assert.ok(readme.includes(`Linuxは約${linux}秒、Retroは約${retro}秒、Nmapは約${nmap}秒、Wiresharkは約${wireshark}秒`));
+    assert.ok(readmeEn.includes(`about ${linux} seconds for Linux, about ${retro} seconds for Retro, about ${nmap} seconds for Nmap and about ${wireshark} seconds for Wireshark`));
+    const open = SCENE_LINES.nmap.filter(line => line.startsWith('Discovered open port')).length;
+    assert.equal(open, 10);
+    assert.ok(SCENE_LINES.nmap.includes(`Scanning ${open} services on 3 hosts`));
+    assert.ok(readme.includes(`「Discovered open port」の行を数えると${open}行で、「Scanning ${open} services on 3 hosts」と合う`));
+    assert.ok(readmeEn.includes(`the "Discovered open port" lines number ${open}, which matches "Scanning ${open} services on 3 hosts"`));
+    assert.ok(SCENE_LINES.wireshark.includes('Frame 1: 74 bytes on wire (592 bits), 74 bytes captured (592 bits)'));
+    assert.equal(74 * 8, 592);
+    const epochLine = SCENE_LINES.wireshark.find(line => line.includes('Epoch Time: 1731648942.'));
+    assert.ok(epochLine);
+    const jst = new Date(1731648942 * 1000 + 9 * 3600 * 1000).toISOString().slice(0, 19);
+    assert.equal(jst, '2024-11-15T14:35:42');
+    assert.ok(readme.includes('Epoch Timeの1731648942は2024年11月15日14時35分42秒（日本時間）'));
+    assert.ok(readmeEn.includes('the Epoch Time 1731648942 is 14:35:42 on November 15, 2024 (Japan time)'));
+    assert.ok(SCENE_LINES.nmap.some(line => line.startsWith('Scanning 192.168.1.0/24')));
+});

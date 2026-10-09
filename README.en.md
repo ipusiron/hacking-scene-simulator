@@ -161,6 +161,14 @@ If fullscreen is refused, playback simply continues inside the ordinary browser 
 
 ## 🎯 Where it is useful
 
+Ways of using this tool in particular
+
+- Choosing a scene that fits the length of a shot: people making video pick a scene to match the length of a cut. Estimated from the average interval between lines, all lines appear in about 44 seconds for Linux, about 60 seconds for Retro, about 55 seconds for Nmap and about 37 seconds for Wireshark (the intervals change randomly every time, so run it through once before the real take)
+- A class that checks the numbers on the screen: the numbers in the logs are cross-checked by the tests, so the scenes work as material with an answer key. In the Nmap scene, the "Discovered open port" lines number 10, which matches "Scanning 10 services on 3 hosts". In the Wireshark scene, "74 bytes" is 592 bits, and the Epoch Time 1731648942 is 14:35:42 on November 15, 2024 (Japan time). It is practice for looking again at hacking screens in films and dramas from the same angle
+- Practicing how to read the output without scanning anything: the results are for a fictional network (192.168.1.0/24), so you can practice reading Nmap's "PORT STATE SERVICE VERSION" columns or the layers of a Wireshark frame without sending anything to anyone's devices
+
+General uses
+
 - **Film and television**: the screen behind a hacking scene
 - **Interviews and press work**: background footage for a security story
 - **Teaching and talks**: illustrating what these tools look like
